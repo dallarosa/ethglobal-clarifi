@@ -2,7 +2,7 @@ import { ethers } from "hardhat";
 
 async function main() {
   const AutoswapModule = await ethers.getContractFactory("AutoswapModule");
-  const autoswapModule = await AutoswapModule.deploy("0x93bcDc45f7e62f89a8e901DC4A0E2c6C427D9F25");
+  const autoswapModule = await AutoswapModule.deploy("0xE592427A0AEce92De3Edee1F18E0157C05861564");
 
   await autoswapModule.deployed();
 

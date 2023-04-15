@@ -3,7 +3,7 @@ pragma solidity ^0.8.9;
 
 import "./Enum.sol";
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
-import '@uniswap/v2-periphery/contracts/interfaces/IUniswapV2Router02.sol';
+import '@uniswap/v3-periphery/contracts/interfaces/ISwapRouter.sol';
 
 interface GnosisSafe {
     /// @dev Allows a Module to execute a Safe transaction without any further confirmations.
@@ -20,20 +20,21 @@ contract AutoswapModule {
 
     string public constant NAME = "Autoswap Module";
     string public constant VERSION = "0.1.0";
+    string internal constant SWAP_EXACT_INPUT = "exactInputSingle((address,address,uint24,address,uint256,uint256,uint256,uint160))";
 
     // Safe -> Token
     mapping(address => IERC20) public desiredTokens;
     // Safe -> Token -> boolean
     mapping(address => mapping(IERC20 => bool)) public sourceTokens;
-    IUniswapV2Router02 public uniswapV2Router02;
+    ISwapRouter public uniswapRouter;
 
     event SourceTokenSet(address indexed safe, IERC20 indexed sourceToken);
     event SourceTokenUnset(address indexed safe, IERC20 indexed sourceToken);
     event DesiredTokenSet(address indexed safe, IERC20 indexed desiredToken);
     event ExecuteAutoswap(address indexed safe, IERC20 fromToken, IERC20 destToken, uint256 fromAmount);
 
-    constructor(address _uniswapV2Router02) {
-        uniswapV2Router02 = IUniswapV2Router02(_uniswapV2Router02);
+    constructor(address _uniswapRouter) {
+        uniswapRouter = ISwapRouter(_uniswapRouter);
     }
 
     /// @dev Allows to update the desired token for a specified safe. This can only be done via a Safe transaction.
@@ -78,14 +79,26 @@ contract AutoswapModule {
         IERC20 destToken = desiredTokens[address(safe)];
         require(address(destToken) != address(0x0), "desired token has not been set");
 
-        require(token.approve(address(uniswapV2Router02), amount), 'approve failed.');
-
         // Perform external interactions
+        bytes memory approveData = abi.encodeWithSignature("approve(address,uint256)", address(uniswapRouter), amount);
+        require(safe.execTransactionFromModule(address(token), 0, approveData, Enum.Operation.Call), "Could not approve");
+
         address[] memory path = new address[](2);
         path[0] = address(token);
         path[1] = address(destToken);
-        bytes memory data = abi.encodeWithSignature("swapExactTokensForTokens(uint256,uint256,address[],address,uint256)", amount, 0, path, safe, block.timestamp);
-        require(safe.execTransactionFromModule(address(uniswapV2Router02), 0, data, Enum.Operation.Call), "Could not execute swap");
+        ISwapRouter.ExactInputSingleParams memory params = ISwapRouter
+            .ExactInputSingleParams({
+                tokenIn: address(token),
+                tokenOut: address(destToken),
+                fee: 100,
+                recipient: address(safe),
+                deadline: block.timestamp,
+                amountIn: amount,
+                amountOutMinimum: 1,
+                sqrtPriceLimitX96: 0
+            });
+        bytes memory data = abi.encodeWithSignature(SWAP_EXACT_INPUT, params);
+        require(safe.execTransactionFromModule(address(uniswapRouter), 0, data, Enum.Operation.Call), "Could not execute swap");
 
         emit ExecuteAutoswap(address(safe), token, destToken, amount);
     }

@@ -37,7 +37,7 @@ export interface AutoswapModuleInterface extends utils.Interface {
     "setDesiredToken(address)": FunctionFragment;
     "setSourceToken(address)": FunctionFragment;
     "sourceTokens(address,address)": FunctionFragment;
-    "uniswapV2Router02()": FunctionFragment;
+    "uniswapRouter()": FunctionFragment;
     "unsetSourceToken(address)": FunctionFragment;
   };
 
@@ -51,7 +51,7 @@ export interface AutoswapModuleInterface extends utils.Interface {
       | "setDesiredToken"
       | "setSourceToken"
       | "sourceTokens"
-      | "uniswapV2Router02"
+      | "uniswapRouter"
       | "unsetSourceToken"
   ): FunctionFragment;
 
@@ -86,7 +86,7 @@ export interface AutoswapModuleInterface extends utils.Interface {
     values: [PromiseOrValue<string>, PromiseOrValue<string>]
   ): string;
   encodeFunctionData(
-    functionFragment: "uniswapV2Router02",
+    functionFragment: "uniswapRouter",
     values?: undefined
   ): string;
   encodeFunctionData(
@@ -121,7 +121,7 @@ export interface AutoswapModuleInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "uniswapV2Router02",
+    functionFragment: "uniswapRouter",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -253,7 +253,7 @@ export interface AutoswapModule extends BaseContract {
       overrides?: CallOverrides
     ): Promise<[boolean]>;
 
-    uniswapV2Router02(overrides?: CallOverrides): Promise<[string]>;
+    uniswapRouter(overrides?: CallOverrides): Promise<[string]>;
 
     unsetSourceToken(
       token: PromiseOrValue<string>,
@@ -298,7 +298,7 @@ export interface AutoswapModule extends BaseContract {
     overrides?: CallOverrides
   ): Promise<boolean>;
 
-  uniswapV2Router02(overrides?: CallOverrides): Promise<string>;
+  uniswapRouter(overrides?: CallOverrides): Promise<string>;
 
   unsetSourceToken(
     token: PromiseOrValue<string>,
@@ -343,7 +343,7 @@ export interface AutoswapModule extends BaseContract {
       overrides?: CallOverrides
     ): Promise<boolean>;
 
-    uniswapV2Router02(overrides?: CallOverrides): Promise<string>;
+    uniswapRouter(overrides?: CallOverrides): Promise<string>;
 
     unsetSourceToken(
       token: PromiseOrValue<string>,
@@ -431,7 +431,7 @@ export interface AutoswapModule extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    uniswapV2Router02(overrides?: CallOverrides): Promise<BigNumber>;
+    uniswapRouter(overrides?: CallOverrides): Promise<BigNumber>;
 
     unsetSourceToken(
       token: PromiseOrValue<string>,
@@ -477,7 +477,7 @@ export interface AutoswapModule extends BaseContract {
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
-    uniswapV2Router02(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+    uniswapRouter(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     unsetSourceToken(
       token: PromiseOrValue<string>,

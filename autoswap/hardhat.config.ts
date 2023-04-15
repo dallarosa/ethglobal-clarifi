@@ -9,6 +9,14 @@ const config: HardhatUserConfig = {
     polygon: {
       url: "https://polygon-rpc.com",
       accounts: [process.env.PRIVATE_KEY!]
+    },
+    gnosis: {
+      url: "https://rpc.gnosis.gateway.fm",
+      accounts: [process.env.PRIVATE_KEY!]
+    },
+    scroll: {
+      url: "https://alpha-rpc.scroll.io/l2",
+      accounts: [process.env.PRIVATE_KEY!]
     }
   }
 };
