@@ -41,12 +41,44 @@
         </v-col>
     </v-row>
 </template>
-<script setup lang="ts">
+<script setup>
+import { SafeAuthKit, Web3AuthAdapter, Web3AuthEventListener } from '@safe-global/auth-kit';
+import { Web3AuthOptions } from '@web3auth/modal';
+import { ADAPTER_EVENTS } from '@web3auth/base';
+
 definePageMeta({
     layout: "default",
 });
 
+const options = new Web3AuthOptions({
+    clientId: 'BI43FDOURD9HHMjFEFA2MxfayS_z4DmReixjhpzsbaeeCEiGvJw-j3LdPSFwjLq26cv5Ha-ouWv5OEBTqoiVLDY',
+    web3AuthNetwork: 'testnet',
+    chainConfig: {
+        chainNamespace: "eip155",
+        chainId: "0x5",
+    },
+});
 
+const authKit = new SafeAuthKit(new Web3AuthAdapter(options), {
+    txServiceUrl: 'https://safe-transaction-goerli.safe.global'
+});
+
+const connectedHandler = data => {console.log("CONNECTED", data);navigateTo('/user/dashboard')}
+const disconnectedHandler = data => console.log("DISCONNECTED", data)
+
+const [safeAuthSignInResponse, setSafeAuthSignInResponse] = useState<SafeAuthSignInData | null>(
+    null
+  )
+  const [safeAuth, setSafeAuth] = useState<SafeAuthKit<Web3AuthAdapter>>()
+  const [provider, setProvider] = useState<SafeEventEmitterProvider | null>(null)
+
+authKit.subscribe(ADAPTER_EVENTS.CONNECTED, connectedHandler)
+
+authKit.subscribe(ADAPTER_EVENTS.DISCONNECTED, disconnectedHandler)
+
+
+
+setSafeAuth(authKit)
 
 const snackbar = ref(false)
 const showPassword = ref(false)
@@ -57,7 +89,8 @@ const password = ref('')
 
 
 async function emailLogin() {
-    if (false) {
+    const response =  await authKit.signIn();
+    if (response.CONNECTED) {
         navigateTo('/user/dashboard')
     }
     else {
