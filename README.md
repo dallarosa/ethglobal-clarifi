@@ -1,2 +1,2 @@
-# ethglobal-clarifi
-Clarifi Project for EthGlobal Tokyo
+# ethglobal-jerryfi
+JerryFi Project for EthGlobal Tokyo Hackthon
