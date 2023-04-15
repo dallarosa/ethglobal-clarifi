@@ -18,8 +18,6 @@ export type { IUniswapV2Router01 } from "./@uniswap/v2-periphery/contracts/inter
 export { IUniswapV2Router01__factory } from "./factories/@uniswap/v2-periphery/contracts/interfaces/IUniswapV2Router01__factory";
 export type { IUniswapV2Router02 } from "./@uniswap/v2-periphery/contracts/interfaces/IUniswapV2Router02";
 export { IUniswapV2Router02__factory } from "./factories/@uniswap/v2-periphery/contracts/interfaces/IUniswapV2Router02__factory";
-export type { AllowanceModule } from "./contracts/AutoswapModule.sol/AllowanceModule";
-export { AllowanceModule__factory } from "./factories/contracts/AutoswapModule.sol/AllowanceModule__factory";
 export type { AutoswapModule } from "./contracts/AutoswapModule.sol/AutoswapModule";
 export { AutoswapModule__factory } from "./factories/contracts/AutoswapModule.sol/AutoswapModule__factory";
 export type { GnosisSafe } from "./contracts/AutoswapModule.sol/GnosisSafe";

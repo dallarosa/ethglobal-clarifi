@@ -81,7 +81,10 @@ contract AutoswapModule {
         require(token.approve(address(uniswapV2Router02), amount), 'approve failed.');
 
         // Perform external interactions
-        bytes memory data = abi.encodeWithSignature("swapExactTokensForTokens(uint amountIn,uint amountOutMin,address[] path,address to,uint deadline)", amount, 0, [token, destToken], safe, 0);
+        address[] memory path = new address[](2);
+        path[0] = address(token);
+        path[1] = address(destToken);
+        bytes memory data = abi.encodeWithSignature("swapExactTokensForTokens(uint256,uint256,address[],address,uint256)", amount, 0, path, safe, block.timestamp);
         require(safe.execTransactionFromModule(address(uniswapV2Router02), 0, data, Enum.Operation.Call), "Could not execute swap");
 
         emit ExecuteAutoswap(address(safe), token, destToken, amount);
