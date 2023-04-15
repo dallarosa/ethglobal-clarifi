@@ -1,6 +1,6 @@
 # Autoswap Module for Safe Wallet
 
-This repository contains the Autoswap Module, a smart contract designed to interact with the Safe Wallet wallet and enable automated token swaps using the Uniswap V2 Router. The Autoswap Module allows the wallet owner to set desired tokens and source tokens for swapping. The module utilizes `execTransactionFromModule` function provided by the Safe Wallet to bypass security controls and execute token swaps via the Uniswap V2 Router.
+This repository contains the Autoswap Module, a smart contract designed to interact with the Safe Wallet wallet and enable automated token swaps using the Uniswap V3 Router. The Autoswap Module allows the wallet owner to set desired tokens and source tokens for swapping. The module utilizes `execTransactionFromModule` function provided by the Safe Wallet to bypass security controls and execute token swaps via the Uniswap V3 Router.
 
 ## Features
 
@@ -9,11 +9,11 @@ Authorized Safe Wallet users:
 - Set source tokens for the Safe
 - Unset source tokens for the Safe
 Any party:
-- Execute autoswap using Uniswap V2 Router
+- Execute autoswap using Uniswap V3 Router
 
 ## Usage
 
-1. Deploy the AutoswapModule contract, providing the Uniswap V2 Router02 contract address as a constructor parameter.
+1. Deploy the AutoswapModule contract, providing the Uniswap V3 Router contract address as a constructor parameter.
 ```
 npx hardhat run scripts/deploy.ts --network polygon
 ```
@@ -41,7 +41,7 @@ In fact, it is very much in company's interest to use this set up instead of com
   - **setDesiredToken()**: Sets the desired token for the Safe wallet.
   - **setSourceToken()**: Sets a source token to be allowed for swapping.
   - **unsetSourceToken()**: Unsets a source token, disallowing it for swapping.
-  - **executeAutoswap()**: Executes the autoswap for a specified Safe, token, and amount using the Uniswap V2 Router.
+  - **executeAutoswap()**: Executes the autoswap for a specified Safe, token, and amount using the Uniswap V3 Router.
 
 ## Events
 
